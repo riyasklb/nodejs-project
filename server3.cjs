@@ -8,30 +8,69 @@ app.use(express.json());
 
 
 
+
+//update product
+app.put('/product/:id', async (req, res) => {
+    try {
+        const { id } = req.params;
+        const product = await Product.findByIdAndUpdate(id, req.body);
+
+        if (!product) {
+            return res.status(404).json({ message: `cannot find any product${id}` })
+
+        }
+
+        const updatedProduct = await Product.findById(id);
+        res.status(200).json(updatedProduct);
+    } catch (error) {
+        res.status(500).json({ message: error.message })
+    }
+});
+
+
+
+
+
 app.get('/', (req, res) => {
     res.send('Hello World!');
 });
 
-app.get('/product',async (req, res) => {
-  try {
-    const product = await Product.find({})
-    res.status(200).json(product);
-  } catch (error) {
-    res.status(500).json({message:error.message})
-  }
+app.get('/product', async (req, res) => {
+    try {
+        const product = await Product.find({})
+        res.status(200).json(product);
+    } catch (error) {
+        res.status(500).json({ message: error.message })
+    }
 });
 
 
 
-app.get('/product/:id',async (req, res) => {
+//delete product
+app.delete('/product/:id', async (req, res) => {
     try {
-        const {id}=req.params;
-      const productid = await Product.findById(id);
-      res.status(200).json(productid);
+        const { id } = req.params;
+        const product = await Product.findByIdAndDelete(id);
+        if (!process) {
+            return req.status(404).json({ message: `cannot find any product${id}` })
+        }
+
+        res.status(200).json(product);
     } catch (error) {
-        res.status(500).json({message:error.message})
+        res.status(500).json({ message: error.message })
     }
-  });
+});
+
+
+app.get('/product/:id', async (req, res) => {
+    try {
+        const { id } = req.params;
+        const productid = await Product.findById(id);
+        res.status(200).json(productid);
+    } catch (error) {
+        res.status(500).json({ message: error.message })
+    }
+});
 
 app.post('/product', async (req, res) => {
     try {
@@ -47,12 +86,12 @@ mongoose.connect('mongodb+srv://riyas:56146925@domainapi.qpyufrb.mongodb.net/Nod
     useNewUrlParser: true,
     useUnifiedTopology: true
 })
-.then(() => {
-    console.log('Connected to MongoDB');
-    app.listen(PORT, () => {
-        console.log(`Node API is running on port ${PORT}`);
+    .then(() => {
+        console.log('Connected to MongoDB');
+        app.listen(PORT, () => {
+            console.log(`Node API is running on port ${PORT}`);
+        });
+    })
+    .catch((error) => {
+        console.log(error);
     });
-})
-.catch((error) => {
-    console.log(error);
-});
