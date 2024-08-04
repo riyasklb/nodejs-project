@@ -6,7 +6,7 @@ import app from './server.cjs';
 // import { celciusToFahrnheit } from './utils.js';  // Ensure this is uncommented if needed and that utils.js is an ES module
 // console.log(`Celsius to Fahrenheit: ${celciusToFahrnheit(0)}`);
 
-const PORT = process.env.PORT || 3000;
+const PORT = process.env.PORT ;
 
 mongoose.connect('mongodb+srv://riyas:56146925@domainapi.qpyufrb.mongodb.net/Node-API?retryWrites=true&w=majority&appName=domainAPI', {
   useNewUrlParser: true,
